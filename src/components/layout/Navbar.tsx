@@ -5,6 +5,7 @@ import { Package, Search, Settings, ShoppingCart, User } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useCartUI } from "../../context/CartUIContext";
 import { clearAuth } from "../../redux/slices/authSlice";
+import { clearCart } from "../../redux/slices/cartSlice";
 import { STORE_LIST_PRODUCTS } from "../../graphql/queries/Store";
 import { ICompanyInfo, IStoreProduct } from "../../utils/interfaces/StoreProduct";
 import { Button } from "../ui/button";
@@ -42,6 +43,7 @@ const Navbar: FC<NavbarProps> = ({ company, companySlug, search, onSearchChange 
 
   const handleLogout = () => {
     dispatch(clearAuth());
+    dispatch(clearCart());
     setAccountOpen(false);
     navigate(`/${companySlug}`);
   };

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { STORE_LOGIN, STORE_REGISTER, STORE_UPDATE_CART } from "../graphql/mutations/StoreAuth";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { clearAuth, setAuth } from "../redux/slices/authSlice";
-import { CartItem, setCart } from "../redux/slices/cartSlice";
+import { CartItem, clearCart, setCart } from "../redux/slices/cartSlice";
 
 interface RegisterInput {
   fullName: string;
@@ -45,19 +45,20 @@ const useStoreAuth = (companyId: string) => {
   const login = async (phoneNumber: string, password: string) => {
     const { data } = await storeLoginMutation({ variables: { companyId, phoneNumber, password } });
     const result = data.storeLogin;
-    dispatch(setAuth({ token: result.token, client: result.client }));
+    dispatch(setAuth({ token: result.token, client: result.client, companyId }));
     dispatch(setCart(toCartItems(result.cart)));
   };
 
   const register = async (input: RegisterInput) => {
     const { data } = await storeRegisterMutation({ variables: { companyId, input } });
     const result = data.storeRegister;
-    dispatch(setAuth({ token: result.token, client: result.client }));
+    dispatch(setAuth({ token: result.token, client: result.client, companyId }));
     dispatch(setCart(toCartItems(result.cart)));
   };
 
   const logout = () => {
     dispatch(clearAuth());
+    dispatch(clearCart());
   };
 
   // Sincroniza el carrito al backend mientras haya sesión (debounced)

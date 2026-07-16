@@ -1,9 +1,9 @@
 import { FC } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 import { IStoreProduct } from "../../utils/interfaces/StoreProduct";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addToCart } from "../../redux/slices/cartSlice";
 import { useCartUI } from "../../context/CartUIContext";
 import { Button } from "../ui/button";
@@ -18,10 +18,21 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
   const dispatch = useAppDispatch();
   const { openCart } = useCartUI();
   const { companySlug } = useParams();
+  const navigate = useNavigate();
+  const isAuthenticated = useAppSelector((state) => !!state.authSlice.token);
   const outOfStock = product.stock <= 0;
 
   const handleAddToCart = () => {
     if (outOfStock) return;
+
+    if (!isAuthenticated) {
+      toast.info("Inicia sesión o crea una cuenta para agregar al carrito");
+      navigate(`/${companySlug}/login`, {
+        state: { from: `/${companySlug}/producto/${product._id}` },
+      });
+      return;
+    }
+
     dispatch(
       addToCart({
         item: {

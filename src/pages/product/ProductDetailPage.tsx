@@ -1,13 +1,13 @@
 import { useQuery } from "@apollo/client";
 import { FC, useEffect, useState } from "react";
 import { ChevronRight, Minus, Plus, ShoppingCart } from "lucide-react";
-import { Link, useOutletContext, useParams } from "react-router-dom";
+import { Link, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import ProductCard from "../../components/product/ProductCard";
 import StockBadge from "../../components/product/StockBadge";
 import { STORE_LIST_PRODUCTS } from "../../graphql/queries/Store";
 import { useCartUI } from "../../context/CartUIContext";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addToCart } from "../../redux/slices/cartSlice";
 import { IStoreProduct } from "../../utils/interfaces/StoreProduct";
 import { StoreOutletContext } from "../../components/layout/CompanyLayout";
@@ -21,7 +21,9 @@ const ProductDetailPage: FC = () => {
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState<string | null>(null);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { openCart } = useCartUI();
+  const isAuthenticated = useAppSelector((state) => !!state.authSlice.token);
 
   const { data, loading } = useQuery<{ storeListProducts: IStoreProduct[] }>(STORE_LIST_PRODUCTS, {
     variables: { companyId },
@@ -79,6 +81,15 @@ const ProductDetailPage: FC = () => {
 
   const handleAddToCart = () => {
     if (outOfStock) return;
+
+    if (!isAuthenticated) {
+      toast.info("Inicia sesión o crea una cuenta para agregar al carrito");
+      navigate(`/${companySlug}/login`, {
+        state: { from: `/${companySlug}/producto/${product._id}` },
+      });
+      return;
+    }
+
     dispatch(
       addToCart({
         item: {
