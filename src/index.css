@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: #a0c82e;
+    --color-primary-dark: #8db526;
+    --color-dark: #083744;
+    --color-dark-light: #12586a;
+    --color-light: #349ada;
+
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 76 63% 48%;
+    --primary-foreground: 193 79% 15%;
+    --secondary: 193 79% 15%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 210 20% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 210 20% 96%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 15% 89%;
+    --input: 214 15% 89%;
+    --ring: 76 63% 48%;
+    --radius: 0.75rem;
+  }
+}
+
+:root {
+  font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+body {
+  background-color: #f8faf7;
+}
+
+.placeholder-stripes {
+  background-color: #f5f5f4;
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent 0 20px,
+    rgba(0, 0, 0, 0.01) 20px 40px
+  );
+}
+
+.hero-stripes::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0.05) 0 2px,
+    transparent 2px 26px
+  );
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(160, 200, 46, 0.35);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(160, 200, 46, 0.6);
+}
