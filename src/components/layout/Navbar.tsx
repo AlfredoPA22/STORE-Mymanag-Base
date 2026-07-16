@@ -7,6 +7,7 @@ import { useCartUI } from "../../context/CartUIContext";
 import { clearAuth } from "../../redux/slices/authSlice";
 import { clearCart } from "../../redux/slices/cartSlice";
 import { STORE_LIST_PRODUCTS } from "../../graphql/queries/Store";
+import { formatPrice } from "../../utils/currency";
 import { ICompanyInfo, IStoreProduct } from "../../utils/interfaces/StoreProduct";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -129,7 +130,7 @@ const Navbar: FC<NavbarProps> = ({ company, companySlug, search, onSearchChange 
                   )}
                 </div>
                 <span className="shrink-0 text-sm font-bold text-foreground">
-                  Bs {product.sale_price.toFixed(2)}
+                  {formatPrice(product.sale_price, company?.currency)}
                 </span>
               </button>
             ))

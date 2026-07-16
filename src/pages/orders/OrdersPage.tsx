@@ -9,6 +9,7 @@ import Pagination from "../../components/common/Pagination";
 import { STORE_MY_ORDERS } from "../../graphql/queries/StoreAuth";
 import { StoreOutletContext } from "../../components/layout/CompanyLayout";
 import { formatDate } from "../../utils/formatDate";
+import { formatPrice } from "../../utils/currency";
 import useStoreAuth from "../../hooks/useStoreAuth";
 
 interface StoreOrder {
@@ -24,7 +25,7 @@ const PAGE_SIZE = 8;
 
 const OrdersPage: FC = () => {
   const { companySlug } = useParams();
-  const { companyId } = useOutletContext<StoreOutletContext>();
+  const { companyId, company } = useOutletContext<StoreOutletContext>();
   const { isAuthenticated } = useStoreAuth(companyId);
   const [page, setPage] = useState(1);
 
@@ -69,7 +70,9 @@ const OrdersPage: FC = () => {
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="text-right">
-                        <p className="font-bold text-foreground">Bs {order.total.toFixed(2)}</p>
+                        <p className="font-bold text-foreground">
+                          {formatPrice(order.total, company?.currency)}
+                        </p>
                         <Badge variant={order.status === "Aprobado" ? "success" : "secondary"}>
                           {order.status}
                         </Badge>

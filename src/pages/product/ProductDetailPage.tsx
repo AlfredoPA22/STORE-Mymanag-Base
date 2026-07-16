@@ -14,10 +14,11 @@ import { StoreOutletContext } from "../../components/layout/CompanyLayout";
 import { Button } from "../../components/ui/button";
 import { Separator } from "../../components/ui/separator";
 import { Skeleton } from "../../components/ui/skeleton";
+import { formatPrice } from "../../utils/currency";
 
 const ProductDetailPage: FC = () => {
   const { id, companySlug } = useParams();
-  const { companyId } = useOutletContext<StoreOutletContext>();
+  const { companyId, company } = useOutletContext<StoreOutletContext>();
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState<string | null>(null);
   const dispatch = useAppDispatch();
@@ -164,12 +165,12 @@ const ProductDetailPage: FC = () => {
 
           <div className="mb-4 flex flex-wrap items-center gap-3">
             <span className="font-display text-3xl font-bold text-foreground">
-              Bs {product.sale_price.toFixed(2)}
+              {formatPrice(product.sale_price, company?.currency)}
             </span>
             {product.regular_price != null && product.regular_price > product.sale_price && (
               <>
                 <span className="text-lg text-muted-foreground line-through">
-                  Bs {product.regular_price.toFixed(2)}
+                  {formatPrice(product.regular_price, company?.currency)}
                 </span>
                 <span className="rounded-full bg-primary px-2 py-0.5 text-xs font-bold text-primary-foreground">
                   -{Math.round((1 - product.sale_price / product.regular_price) * 100)}%

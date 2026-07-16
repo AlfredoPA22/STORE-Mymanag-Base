@@ -5,6 +5,7 @@ import { useCartUI } from "../../context/CartUIContext";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { removeFromCart, updateQuantity } from "../../redux/slices/cartSlice";
 import useStockRevalidation from "../../hooks/useStockRevalidation";
+import { formatPrice } from "../../utils/currency";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import {
@@ -14,9 +15,10 @@ import {
   SheetTitle,
 } from "../ui/sheet";
 
-const CartDrawer: FC<{ companySlug: string; companyId: string | null }> = ({
+const CartDrawer: FC<{ companySlug: string; companyId: string | null; currency?: string }> = ({
   companySlug,
   companyId,
+  currency,
 }) => {
   const { isCartOpen, closeCart, openCart } = useCartUI();
   const items = useAppSelector((state) => state.cartSlice.items);
@@ -74,7 +76,7 @@ const CartDrawer: FC<{ companySlug: string; companyId: string | null }> = ({
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-semibold text-foreground">{item.name}</p>
                     <p className="mb-2 text-sm font-bold text-primary-dark">
-                      Bs {item.sale_price.toFixed(2)}
+                      {formatPrice(item.sale_price, currency)}
                     </p>
 
                     <div className="flex items-center gap-2">
@@ -124,7 +126,7 @@ const CartDrawer: FC<{ companySlug: string; companyId: string | null }> = ({
           <div className="space-y-3 border-t px-5 py-4">
             <div className="flex justify-between font-bold text-foreground">
               <span>Subtotal</span>
-              <span>Bs {subtotal.toFixed(2)}</span>
+              <span>{formatPrice(subtotal, currency)}</span>
             </div>
             <Button
               className="w-full rounded-full bg-primary py-6 font-bold text-primary-foreground hover:bg-primary-dark"

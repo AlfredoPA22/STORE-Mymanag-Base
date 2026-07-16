@@ -9,6 +9,7 @@ import { Skeleton } from "../../components/ui/skeleton";
 import { STORE_ORDER_DETAIL } from "../../graphql/queries/StoreAuth";
 import { StoreOutletContext } from "../../components/layout/CompanyLayout";
 import { formatDate } from "../../utils/formatDate";
+import { formatPrice } from "../../utils/currency";
 import useStoreAuth from "../../hooks/useStoreAuth";
 
 interface StoreOrderDetailItem {
@@ -32,7 +33,7 @@ interface StoreOrderDetail {
 
 const OrderDetailPage: FC = () => {
   const { companySlug, orderId } = useParams();
-  const { companyId } = useOutletContext<StoreOutletContext>();
+  const { companyId, company } = useOutletContext<StoreOutletContext>();
   const { isAuthenticated } = useStoreAuth(companyId);
 
   const { data, loading, error } = useQuery<{ storeOrderDetail: StoreOrderDetail }>(
@@ -111,10 +112,12 @@ const OrderDetailPage: FC = () => {
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium text-foreground">{item.productName}</p>
                 <p className="text-xs text-muted-foreground">
-                  {item.quantity} x Bs {item.sale_price.toFixed(2)}
+                  {item.quantity} x {formatPrice(item.sale_price, company?.currency)}
                 </p>
               </div>
-              <p className="font-semibold text-foreground">Bs {item.subtotal.toFixed(2)}</p>
+              <p className="font-semibold text-foreground">
+                {formatPrice(item.subtotal, company?.currency)}
+              </p>
             </div>
           ))}
 
@@ -122,7 +125,7 @@ const OrderDetailPage: FC = () => {
 
           <div className="flex justify-between font-bold text-foreground">
             <span>Total</span>
-            <span>Bs {order.total.toFixed(2)}</span>
+            <span>{formatPrice(order.total, company?.currency)}</span>
           </div>
         </CardContent>
       </Card>

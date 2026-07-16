@@ -14,10 +14,11 @@ import { Separator } from "../../components/ui/separator";
 import { Textarea } from "../../components/ui/textarea";
 import useStoreAuth from "../../hooks/useStoreAuth";
 import useStockRevalidation from "../../hooks/useStockRevalidation";
+import { formatPrice } from "../../utils/currency";
 
 const CheckoutPage: FC = () => {
   const { companySlug } = useParams();
-  const { companyId } = useOutletContext<StoreOutletContext>();
+  const { companyId, company } = useOutletContext<StoreOutletContext>();
   const items = useAppSelector((state) => state.cartSlice.items);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -192,18 +193,18 @@ const CheckoutPage: FC = () => {
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-bold text-foreground">{item.name}</p>
                     <p className="text-xs text-muted-foreground">
-                      Cant. {item.quantity} × Bs {item.sale_price.toFixed(2)}
+                      Cant. {item.quantity} × {formatPrice(item.sale_price, company?.currency)}
                     </p>
                   </div>
                   <span className="shrink-0 text-sm font-bold text-foreground">
-                    Bs {(item.sale_price * item.quantity).toFixed(2)}
+                    {formatPrice(item.sale_price * item.quantity, company?.currency)}
                   </span>
                 </div>
               ))}
               <Separator />
               <div className="flex justify-between font-bold text-foreground">
                 <span>Total</span>
-                <span>Bs {subtotal.toFixed(2)}</span>
+                <span>{formatPrice(subtotal, company?.currency)}</span>
               </div>
             </CardContent>
           </Card>

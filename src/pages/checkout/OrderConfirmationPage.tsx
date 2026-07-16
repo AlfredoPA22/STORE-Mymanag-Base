@@ -1,6 +1,8 @@
 import { FC } from "react";
 import { Check } from "lucide-react";
-import { Link, useLocation, useParams, Navigate } from "react-router-dom";
+import { Link, useLocation, useOutletContext, useParams, Navigate } from "react-router-dom";
+import { StoreOutletContext } from "../../components/layout/CompanyLayout";
+import { formatPrice } from "../../utils/currency";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 
@@ -12,6 +14,7 @@ interface OrderResultState {
 
 const OrderConfirmationPage: FC = () => {
   const { companySlug } = useParams();
+  const { company } = useOutletContext<StoreOutletContext>();
   const location = useLocation();
   const result = location.state as OrderResultState | undefined;
 
@@ -37,7 +40,9 @@ const OrderConfirmationPage: FC = () => {
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">Total</span>
-            <span className="font-bold text-foreground">Bs {result.total.toFixed(2)}</span>
+            <span className="font-bold text-foreground">
+              {formatPrice(result.total, company?.currency)}
+            </span>
           </div>
         </CardContent>
       </Card>

@@ -62,7 +62,7 @@ const CompanyLayout: FC = () => {
           <Outlet context={{ companyId, company, search } satisfies StoreOutletContext} />
         </main>
         <Footer company={company} />
-        <CartDrawer companySlug={companySlug!} companyId={companyId} />
+        <CartDrawer companySlug={companySlug!} companyId={companyId} currency={company?.currency} />
       </div>
     </CartUIProvider>
   );

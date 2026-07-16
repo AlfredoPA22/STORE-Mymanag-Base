@@ -1,11 +1,13 @@
 import { FC } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 import { IStoreProduct } from "../../utils/interfaces/StoreProduct";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addToCart } from "../../redux/slices/cartSlice";
 import { useCartUI } from "../../context/CartUIContext";
+import { StoreOutletContext } from "../layout/CompanyLayout";
+import { formatPrice } from "../../utils/currency";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import StockBadge from "./StockBadge";
@@ -18,6 +20,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
   const dispatch = useAppDispatch();
   const { openCart } = useCartUI();
   const { companySlug } = useParams();
+  const { company } = useOutletContext<StoreOutletContext>();
   const navigate = useNavigate();
   const isAuthenticated = useAppSelector((state) => !!state.authSlice.token);
   const outOfStock = product.stock <= 0;
@@ -96,11 +99,11 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
           <div className="flex items-center justify-between">
             <div className="flex items-baseline gap-2">
               <span className="font-display text-lg font-bold text-foreground">
-                Bs {product.sale_price.toFixed(2)}
+                {formatPrice(product.sale_price, company?.currency)}
               </span>
               {product.regular_price != null && product.regular_price > product.sale_price && (
                 <span className="text-xs text-muted-foreground line-through">
-                  Bs {product.regular_price.toFixed(2)}
+                  {formatPrice(product.regular_price, company?.currency)}
                 </span>
               )}
             </div>

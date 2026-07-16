@@ -44,6 +44,7 @@ export interface ICompanyInfo {
   phone?: string;
   email?: string;
   country?: string;
+  currency?: string;
   store_banner_image?: string;
   store_theme?: IStoreTheme | null;
 }
