@@ -5,7 +5,7 @@ import { ICompanyInfo } from "../../utils/interfaces/StoreProduct";
 const Footer: FC<{ company: ICompanyInfo | null }> = ({ company }) => {
   return (
     <footer className="mt-16 border-t border-white/10 bg-dark text-slate-300">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-3">
+      <div className="mx-auto grid max-w-[1400px] gap-8 px-4 py-12 sm:grid-cols-3 sm:px-8 lg:px-12">
         <div className="sm:col-span-2">
           <h3 className="mb-2 font-display text-lg font-bold tracking-tight text-white">
             {company?.name ?? "Tienda online"}

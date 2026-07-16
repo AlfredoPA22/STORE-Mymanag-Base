@@ -9,10 +9,9 @@ import { IStoreProduct } from "../utils/interfaces/StoreProduct";
 const useStockRevalidation = (companyId: string) => {
   const dispatch = useAppDispatch();
   const items = useAppSelector((state) => state.cartSlice.items);
-  const [fetchProducts] = useLazyQuery<{ storeListProducts: IStoreProduct[] }>(
-    STORE_LIST_PRODUCTS,
-    { fetchPolicy: "network-only" }
-  );
+  const [fetchProducts, { loading: revalidating }] = useLazyQuery<{
+    storeListProducts: IStoreProduct[];
+  }>(STORE_LIST_PRODUCTS, { fetchPolicy: "network-only" });
 
   const revalidate = useCallback(async () => {
     if (!companyId || items.length === 0) return;
@@ -61,7 +60,7 @@ const useStockRevalidation = (companyId: string) => {
     }
   }, [companyId, items, fetchProducts, dispatch]);
 
-  return { revalidate };
+  return { revalidate, revalidating };
 };
 
 export default useStockRevalidation;

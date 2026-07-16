@@ -88,7 +88,7 @@ const CatalogPage: FC = () => {
 
   if (error) {
     return (
-      <div className="mx-auto max-w-6xl px-4 py-16 text-center text-destructive">
+      <div className="mx-auto max-w-[1400px] px-4 py-16 text-center text-destructive">
         No se pudo cargar el catálogo. Intenta de nuevo más tarde.
       </div>
     );
@@ -98,7 +98,7 @@ const CatalogPage: FC = () => {
     <div>
       <CatalogHero company={company} />
 
-      <div className="mx-auto max-w-6xl px-4 py-8">
+      <div className="mx-auto max-w-[1400px] px-4 py-8 sm:px-8 lg:px-12">
         <ChipCarousel title="Categorías" options={categories} value={categoryFilter} onChange={setCategoryFilter} />
 
         <div className="mb-6 flex flex-wrap items-center gap-3">

@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
+import { Loader2, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useCartUI } from "../../context/CartUIContext";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -22,7 +22,7 @@ const CartDrawer: FC<{ companySlug: string; companyId: string | null }> = ({
   const items = useAppSelector((state) => state.cartSlice.items);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { revalidate } = useStockRevalidation(companyId ?? "");
+  const { revalidate, revalidating } = useStockRevalidation(companyId ?? "");
 
   useEffect(() => {
     if (isCartOpen) {
@@ -44,6 +44,12 @@ const CartDrawer: FC<{ companySlug: string; companyId: string | null }> = ({
         <SheetHeader className="border-b px-5 py-4 text-left">
           <SheetTitle>Tu carrito</SheetTitle>
         </SheetHeader>
+
+        {revalidating && (
+          <div className="flex items-center gap-2 border-b bg-muted/50 px-5 py-2 text-xs text-muted-foreground">
+            <Loader2 size={13} className="animate-spin" /> Verificando disponibilidad...
+          </div>
+        )}
 
         <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
           {items.length === 0 ? (

@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import { Pencil } from "lucide-react";
+import { Loader2, Pencil } from "lucide-react";
 import { FC, useEffect, useState } from "react";
 import { Link, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -22,7 +22,7 @@ const CheckoutPage: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { isAuthenticated, client } = useStoreAuth(companyId);
-  const { revalidate } = useStockRevalidation(companyId);
+  const { revalidate, revalidating } = useStockRevalidation(companyId);
 
   useEffect(() => {
     revalidate();
@@ -95,12 +95,19 @@ const CheckoutPage: FC = () => {
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8 sm:py-10">
+    <div className="mx-auto max-w-[1100px] px-4 py-8 sm:px-8 sm:py-10">
       <h1 className="mb-2 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
         Finalizar pedido
       </h1>
-      <p className="mb-9 text-sm text-muted-foreground">
+      <p className="text-sm text-muted-foreground">
         Revisa tu carrito y completa tus datos. Te contactaremos para coordinar pago y entrega.
+      </p>
+      <p className="mb-9 mt-1.5 flex h-4 items-center gap-2 text-xs text-muted-foreground">
+        {revalidating && (
+          <>
+            <Loader2 size={13} className="animate-spin" /> Verificando disponibilidad de stock...
+          </>
+        )}
       </p>
 
       <div className="grid gap-8 sm:grid-cols-2">
@@ -157,7 +164,7 @@ const CheckoutPage: FC = () => {
 
           <Button
             type="button"
-            disabled={loading}
+            disabled={loading || revalidating}
             onClick={handleSubmit}
             className="mt-6 w-full rounded-full bg-primary py-6 font-bold text-primary-foreground hover:bg-primary-dark"
           >

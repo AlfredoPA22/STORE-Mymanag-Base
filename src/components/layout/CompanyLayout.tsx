@@ -1,4 +1,5 @@
 import { FC, useState } from "react";
+import { Loader2 } from "lucide-react";
 import { Outlet, useParams } from "react-router-dom";
 import CartDrawer from "../cart/CartDrawer";
 import { CartUIProvider } from "../../context/CartUIContext";
@@ -28,7 +29,10 @@ const CompanyLayout: FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-slate-400">Cargando tienda…</div>
+      <div className="flex min-h-screen flex-col items-center justify-center gap-3 text-muted-foreground">
+        <Loader2 className="animate-spin text-primary-dark" size={32} />
+        <p className="text-sm">Cargando tienda…</p>
+      </div>
     );
   }
 

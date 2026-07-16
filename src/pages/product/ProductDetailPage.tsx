@@ -50,7 +50,7 @@ const ProductDetailPage: FC = () => {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-4xl px-4 py-8">
+      <div className="mx-auto max-w-[1400px] px-4 py-8 sm:px-8 lg:px-12">
         <div className="grid gap-8 sm:grid-cols-2">
           <Skeleton className="aspect-square w-full rounded-2xl" />
           <div className="space-y-4">
@@ -66,7 +66,7 @@ const ProductDetailPage: FC = () => {
 
   if (!product) {
     return (
-      <div className="mx-auto max-w-4xl px-4 py-16 text-center">
+      <div className="mx-auto max-w-[1400px] px-4 py-16 text-center">
         <p className="mb-4 text-muted-foreground">No se encontró el producto.</p>
         <Link to={`/${companySlug}`} className="font-semibold text-primary-dark">
           Volver al catálogo
@@ -96,7 +96,7 @@ const ProductDetailPage: FC = () => {
   };
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
+    <div className="mx-auto max-w-[1400px] px-4 py-8 sm:px-8 lg:px-12">
       <nav className="mb-6 flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
         <Link to={`/${companySlug}`} className="hover:text-foreground">
           Catálogo
@@ -111,7 +111,7 @@ const ProductDetailPage: FC = () => {
         <span className="truncate text-foreground">{product.name}</span>
       </nav>
 
-      <div className="grid gap-8 sm:grid-cols-2">
+      <div className="grid gap-8 sm:grid-cols-2 lg:gap-16">
         <div>
           <div className="aspect-square overflow-hidden rounded-2xl border border-border bg-muted">
             {activeImage ? (

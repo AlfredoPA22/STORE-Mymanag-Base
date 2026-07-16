@@ -32,7 +32,7 @@ const CatalogHero: FC<{ company: ICompanyInfo | null }> = ({ company }) => {
           : "linear-gradient(120deg, var(--color-dark), var(--color-dark-light))",
       }}
     >
-      <div className="relative mx-auto max-w-6xl px-4 py-10 sm:py-14">
+      <div className="relative mx-auto max-w-[1400px] px-4 py-10 sm:px-8 sm:py-14 lg:px-12">
         <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-center sm:text-left">
           {company?.image && (
             <img
