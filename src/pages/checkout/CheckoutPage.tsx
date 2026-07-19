@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { clearCart } from "../../redux/slices/cartSlice";
 import { updateClientInfo } from "../../redux/slices/authSlice";
 import { StoreOutletContext } from "../../components/layout/CompanyLayout";
+import ImagePlaceholder from "../../components/product/ImagePlaceholder";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 import { Separator } from "../../components/ui/separator";
@@ -187,7 +188,7 @@ const CheckoutPage: FC = () => {
                     {item.image ? (
                       <img src={item.image} alt={item.name} className="h-full w-full object-contain" />
                     ) : (
-                      <div className="placeholder-stripes h-full w-full" />
+                      <ImagePlaceholder iconSize={18} />
                     )}
                   </div>
                   <div className="min-w-0 flex-1">

@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { removeFromCart, updateQuantity } from "../../redux/slices/cartSlice";
 import useStockRevalidation from "../../hooks/useStockRevalidation";
 import { formatPrice } from "../../utils/currency";
+import ImagePlaceholder from "../product/ImagePlaceholder";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import {
@@ -67,9 +68,7 @@ const CartDrawer: FC<{ companySlug: string; companyId: string | null; currency?:
                     {item.image ? (
                       <img src={item.image} alt={item.name} className="h-full w-full object-contain" />
                     ) : (
-                      <div className="placeholder-stripes flex h-full w-full items-center justify-center font-mono text-xs text-muted-foreground">
-                        Sin imagen
-                      </div>
+                      <ImagePlaceholder iconSize={20} />
                     )}
                   </div>
 

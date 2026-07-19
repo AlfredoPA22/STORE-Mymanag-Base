@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { hexToHslTriple } from "../utils/color";
+import { deriveThemeFromPrimary, hexToHslTriple } from "../utils/color";
 import { IStoreTheme } from "../utils/interfaces/StoreProduct";
 
 const HSL_VARS: Record<string, keyof IStoreTheme> = {
@@ -25,14 +25,21 @@ const useApplyStoreTheme = (theme?: IStoreTheme | null) => {
       return;
     }
 
+    // Si el tema guardado solo trae `primary` (o le faltan campos), se
+    // completa el resto derivándolo del color principal — así el navbar, el
+    // footer, el banner, etc. siempre quedan coherentes con la marca en vez
+    // de quedarse pegados en el color oscuro por defecto.
+    const derived = deriveThemeFromPrimary(theme.primary);
+    const completeTheme: IStoreTheme = { ...derived, ...theme };
+
     Object.entries(HSL_VARS).forEach(([cssVar, key]) => {
-      const hex = theme[key];
+      const hex = completeTheme[key];
       const hsl = hex ? hexToHslTriple(hex) : null;
       if (hsl) root.style.setProperty(cssVar, hsl);
     });
 
     Object.entries(HEX_VARS).forEach(([cssVar, key]) => {
-      const hex = theme[key];
+      const hex = completeTheme[key];
       if (hex) root.style.setProperty(cssVar, hex);
     });
 

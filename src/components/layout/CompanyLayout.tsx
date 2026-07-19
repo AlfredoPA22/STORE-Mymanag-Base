@@ -7,6 +7,7 @@ import useApplyStoreTheme from "../../hooks/useApplyStoreTheme";
 import useCompanyBySlug from "../../hooks/useCompanyBySlug";
 import useStoreAuth from "../../hooks/useStoreAuth";
 import StoreNotFound from "../../pages/misc/StoreNotFound";
+import StoreUnavailable from "../../pages/misc/StoreUnavailable";
 import { useAppDispatch } from "../../redux/hooks";
 import { switchCompany as switchAuthCompany } from "../../redux/slices/authSlice";
 import { switchCompany as switchCartCompany } from "../../redux/slices/cartSlice";
@@ -52,6 +53,10 @@ const CompanyLayout: FC = () => {
 
   if (notFound || !companyId) {
     return <StoreNotFound />;
+  }
+
+  if (company?.store_available === false) {
+    return <StoreUnavailable companyName={company.name} />;
   }
 
   return (

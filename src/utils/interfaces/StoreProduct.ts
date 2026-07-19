@@ -47,4 +47,5 @@ export interface ICompanyInfo {
   currency?: string;
   store_banner_image?: string;
   store_theme?: IStoreTheme | null;
+  store_available?: boolean;
 }

@@ -4,6 +4,7 @@ import { ChevronRight, Minus, Plus, ShoppingCart } from "lucide-react";
 import { Link, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import ProductCard from "../../components/product/ProductCard";
+import ImagePlaceholder from "../../components/product/ImagePlaceholder";
 import StockBadge from "../../components/product/StockBadge";
 import { STORE_LIST_PRODUCTS } from "../../graphql/queries/Store";
 import { useCartUI } from "../../context/CartUIContext";
@@ -129,9 +130,7 @@ const ProductDetailPage: FC = () => {
             {activeImage ? (
               <img src={activeImage} alt={product.name} className="h-full w-full object-contain" />
             ) : (
-              <div className="placeholder-stripes flex h-full w-full items-center justify-center font-mono text-sm text-muted-foreground">
-                Sin imagen
-              </div>
+              <ImagePlaceholder iconSize={40} label="Sin imagen" />
             )}
           </div>
 
@@ -155,7 +154,7 @@ const ProductDetailPage: FC = () => {
 
         <div className="flex flex-col">
           {product.category?.name && (
-            <p className="mb-1.5 text-xs font-bold uppercase tracking-wide text-light">
+            <p className="mb-1.5 text-xs font-bold uppercase tracking-wide text-primary-dark">
               {product.category.name}
             </p>
           )}

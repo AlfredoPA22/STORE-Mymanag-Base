@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { useQuery } from "@apollo/client";
-import { Link, useNavigate } from "react-router-dom";
-import { Package, Search, Settings, ShoppingCart, User } from "lucide-react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Package, Search, Settings, ShoppingCart, User, X } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useCartUI } from "../../context/CartUIContext";
 import { clearAuth } from "../../redux/slices/authSlice";
@@ -9,6 +9,7 @@ import { clearCart } from "../../redux/slices/cartSlice";
 import { STORE_LIST_PRODUCTS } from "../../graphql/queries/Store";
 import { formatPrice } from "../../utils/currency";
 import { ICompanyInfo, IStoreProduct } from "../../utils/interfaces/StoreProduct";
+import ImagePlaceholder from "../product/ImagePlaceholder";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
@@ -34,6 +35,7 @@ const Navbar: FC<NavbarProps> = ({ company, companySlug, search, onSearchChange 
   const { openCart } = useCartUI();
   const [accountOpen, setAccountOpen] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
   const { data: searchData, loading: loadingSearch } = useQuery<{
     storeListProducts: IStoreProduct[];
@@ -68,6 +70,7 @@ const Navbar: FC<NavbarProps> = ({ company, companySlug, search, onSearchChange 
     // siguiente búsqueda hasta un blur/focus manual. Al vaciar el término de
     // búsqueda el dropdown ya se oculta solo.
     onSearchChange("");
+    setMobileSearchOpen(false);
     navigate(`/${companySlug}/producto/${productId}`);
   };
 
@@ -118,7 +121,7 @@ const Navbar: FC<NavbarProps> = ({ company, companySlug, search, onSearchChange 
                       className="h-full w-full object-contain"
                     />
                   ) : (
-                    <div className="placeholder-stripes h-full w-full" />
+                    <ImagePlaceholder iconSize={16} />
                   )}
                 </div>
                 <div className="min-w-0 flex-1">
@@ -156,9 +159,43 @@ const Navbar: FC<NavbarProps> = ({ company, companySlug, search, onSearchChange 
           </span>
         </Link>
 
+        <nav className="hidden shrink-0 items-center gap-1 sm:flex">
+          <NavLink
+            to={`/${companySlug}`}
+            end
+            className={({ isActive }) =>
+              `rounded-full px-3 py-1.5 text-sm font-semibold transition-colors ${
+                isActive ? "bg-white/15 text-white" : "text-white/70 hover:text-white"
+              }`
+            }
+          >
+            Inicio
+          </NavLink>
+          <NavLink
+            to={`/${companySlug}/productos`}
+            className={({ isActive }) =>
+              `rounded-full px-3 py-1.5 text-sm font-semibold transition-colors ${
+                isActive ? "bg-white/15 text-white" : "text-white/70 hover:text-white"
+              }`
+            }
+          >
+            Productos
+          </NavLink>
+        </nav>
+
         {searchInput("hidden flex-1 sm:block")}
 
         <div className="ml-auto flex shrink-0 items-center gap-2 sm:ml-0">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setMobileSearchOpen((v) => !v)}
+            className="rounded-full bg-white/10 text-white hover:bg-primary hover:text-dark sm:hidden"
+            aria-label={mobileSearchOpen ? "Cerrar búsqueda" : "Buscar"}
+          >
+            {mobileSearchOpen ? <X size={18} /> : <Search size={18} />}
+          </Button>
+
           {client ? (
             <Popover open={accountOpen} onOpenChange={setAccountOpen}>
               <PopoverTrigger asChild>
@@ -229,7 +266,9 @@ const Navbar: FC<NavbarProps> = ({ company, companySlug, search, onSearchChange 
         </div>
       </div>
 
-      <div className="px-4 pb-3 sm:hidden">{searchInput("")}</div>
+      {mobileSearchOpen && (
+        <div className="px-4 pb-3 sm:hidden">{searchInput("")}</div>
+      )}
     </header>
   );
 };

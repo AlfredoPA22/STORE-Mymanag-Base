@@ -2,7 +2,8 @@ import { FC } from "react";
 import { Route, Routes } from "react-router-dom";
 import ScrollToTop from "../components/common/ScrollToTop";
 import CompanyLayout from "../components/layout/CompanyLayout";
-import CatalogPage from "../pages/catalog/CatalogPage";
+import HomePage from "../pages/home/HomePage";
+import ProductsPage from "../pages/products/ProductsPage";
 import ProductDetailPage from "../pages/product/ProductDetailPage";
 import CheckoutPage from "../pages/checkout/CheckoutPage";
 import OrderConfirmationPage from "../pages/checkout/OrderConfirmationPage";
@@ -19,7 +20,8 @@ const AppRoutes: FC = () => (
     <Routes>
       <Route path="/" element={<LandingPrompt />} />
       <Route path="/:companySlug" element={<CompanyLayout />}>
-        <Route index element={<CatalogPage />} />
+        <Route index element={<HomePage />} />
+        <Route path="productos" element={<ProductsPage />} />
         <Route path="producto/:id" element={<ProductDetailPage />} />
         <Route path="checkout" element={<CheckoutPage />} />
         <Route path="pedido-confirmado" element={<OrderConfirmationPage />} />

@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { Link, useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { motion } from "framer-motion";
 import { ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 import { IStoreProduct } from "../../utils/interfaces/StoreProduct";
@@ -10,7 +11,10 @@ import { StoreOutletContext } from "../layout/CompanyLayout";
 import { formatPrice } from "../../utils/currency";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
+import ImagePlaceholder from "./ImagePlaceholder";
 import StockBadge from "./StockBadge";
+
+const MotionCard = motion(Card);
 
 interface ProductCardProps {
   product: IStoreProduct;
@@ -59,7 +63,11 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
     : 0;
 
   return (
-    <Card className="group flex flex-col overflow-hidden transition-shadow hover:shadow-lg">
+    <MotionCard
+      whileHover={{ y: -4 }}
+      transition={{ type: "spring", stiffness: 300, damping: 22 }}
+      className="group flex flex-col overflow-hidden transition-shadow hover:shadow-lg"
+    >
       <Link
         to={`/${companySlug}/producto/${product._id}`}
         className="relative block aspect-square overflow-hidden bg-muted"
@@ -73,18 +81,16 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
           <img
             src={product.image}
             alt={product.name}
-            className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
-          <div className="placeholder-stripes flex h-full w-full items-center justify-center font-mono text-xs text-muted-foreground">
-            Sin imagen
-          </div>
+          <ImagePlaceholder iconSize={28} label="Sin imagen" />
         )}
       </Link>
 
       <CardContent className="flex flex-1 flex-col p-4">
         {product.category?.name && (
-          <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-light">
+          <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-primary-dark">
             {product.category.name}
           </p>
         )}
@@ -120,7 +126,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
           </Button>
         </div>
       </CardContent>
-    </Card>
+    </MotionCard>
   );
 };
 
